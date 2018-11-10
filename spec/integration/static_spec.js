@@ -9,10 +9,7 @@ describe('routes : static', () => {
 			request.get(base, (err, res, body) => {
 				expect(res.statusCode).toBe(200);
 				done();
-			}).catch((err) => {
-				console.log(err);
-				done();
-			});			
+			});
 		});
 	});
 
@@ -21,9 +18,6 @@ describe('routes : static', () => {
 			request.get('http://localhost:3000/marco', (err, res, body) => {
 				expect(res.statusCode).toBe(200);
 				expect(body).toBe('polo');
-				done();
-			}).catch((err) => {
-				console.log(err);
 				done();
 			});
 		});
