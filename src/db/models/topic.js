@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      foreignKey: "topicId",
      as: "banners",
    });
+   Topic.belongsTo(models.Rule, {
+     foreignKey: 'ruleId',
+     onDelete: 'CASCADE',
+   });
   };
   return Topic;
 };
