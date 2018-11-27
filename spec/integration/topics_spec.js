@@ -47,43 +47,49 @@ describe('routes : topics', () => {
 		});
 	});
 
-	describe('POST /topics/create', () => {
-		const options = {
-			url: `${base}create`,
-			form: {
-				title: "blink-182-songs",
-				description: "What's your favorite blink-182 song?"
-			}
-		}
+   describe("POST /topics/create", () => {
+      const options = {
+        url: `${base}create`,
+        form: {
+          title: "blink-182 songs",
+          description: "What's your favorite blink-182 song?"
+        }
+      };
 
-		it('should create a new topic and redirect', (done) => {
-			request.post(options, 
-				(err, res, body) => {
-					Topic.findOne({where: {title: 'blink-182 songs'}})
-					.then((topic) => {
-						expect(res.statusCode).toBe(303);
-						expect(topic.title).toBe('blink-182 songs');
-						expect(topic.description).toBe("What's your favorite blink-182 song?");
-						done();
-					})
-					.catch((err) => {
-						console.log(err);
-						done();
-					});
-				}
-			);
-		});
-	});
+      it("should create a new topic and redirect", (done) => {
 
-	describe('GET /topics/:id', () => {
-		it('should render a view with the selected topic', (done) => {
-			request.get(`${base}${this.topic.id}`, (err,res,body) => {
-				expect(err).toBeNull();
-				expect(body).toContain('JS Frameworks');
-				done();
-			});
-		});
-	});
+//#1
+        request.post(options,
+
+//#2
+          (err, res, body) => {
+            Topic.findOne({where: {title: "blink-182 songs"}})
+            .then((topic) => {
+              expect(res.statusCode).toBe(303);
+              expect(topic.title).toBe("blink-182 songs");
+              expect(topic.description).toBe("What's your favorite blink-182 song?");
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            });
+          }
+        );
+      });
+    });
+
+   describe("GET /topics/:id", () => {
+
+     it("should render a view with the selected topic", (done) => {
+       request.get(`${base}${this.topic.id}`, (err, res, body) => {
+         expect(err).toBeNull();
+         expect(body).toContain("JS Frameworks");
+         done();
+       });
+     });
+
+   });
 
 	describe('POST /topics/:id/destroy', () => {
 		it('should delete the topics with associated ID', (done) => {
@@ -103,16 +109,18 @@ describe('routes : topics', () => {
 		});
 	});
 
-	describe('GET /topics/:id/edit', () => {
-		it('should render a view with an edit topic form', (done) => {
-			request.get(`${base}${this.topic.id}/edit`, (err, res, body) => {
-				expect(err).toBeNull();
-				expect(body).toContain('Edit Topic');
-				expect(body).toContain('JS Frameworks');
-				done();
-			});
-		});
-	});
+   describe("GET /topics/:id/edit", () => {
+
+     it("should render a view with an edit topic form", (done) => {
+       request.get(`${base}${this.topic.id}/edit`, (err, res, body) => {
+         expect(err).toBeNull();
+         expect(body).toContain("Edit Topic");
+         expect(body).toContain("JS Frameworks");
+         done();
+       });
+     });
+
+   });
 
 	describe('POST /topics/:id/update', () => {
 		it('should update the topic with given values', (done) => {
