@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
        key: "id",
        as: "topicId",
      }
-   }
-
+   },
   }, {});
   Banner.associate = function(models) {
      Banner.belongsTo(models.Topic, {
@@ -20,8 +19,5 @@ module.exports = (sequelize, DataTypes) => {
        onDelete: "CASCADE",
      });
   };
-
-
-
   return Banner;
 };
