@@ -1,4 +1,4 @@
-const advertisementQueries = require('../db/queries.advertisement.js')
+const advertisementQueries = require('../db/queries.advertisements.js')
 
 module.exports = {
   index(req, res, next){
@@ -6,6 +6,7 @@ module.exports = {
   	advertisementQueries.getAllAdvertisements((err, advertisements) => {
 
   		if(err){
+        console.log(err);
   			res.redirect(500, 'static/index');
   		} else {
   			res.render('advertisements/index', {advertisements});
@@ -49,7 +50,7 @@ module.exports = {
   destroy(req, res, next){
     advertisementQueries.deleteAdvertisement(req.params.id, (err, advertisement) => {
       if(err){
-        res.redirect(500, `/advertisements/${advertisements.id}`)
+        res.redirect(500, `/advertisements/${advertisement.id}`)
       } else {
         res.redirect(303, '/advertisements')
       }

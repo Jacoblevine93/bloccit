@@ -52,7 +52,7 @@ module.exports = {
 		return Topic.findById(id)
 		.then((topic) => {
 			if(!topic){
-				return callbck('Topic not found');
+				return callback('Topic not found');
 			}
 			topic.update(updatedTopic, {
 				fields: Object.keys(updatedTopic)

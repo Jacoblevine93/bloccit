@@ -6,7 +6,7 @@ module.exports = {
 		return Advertisement.all()
 
 		.then((advertisements) => {
-			callback(null, advertisement);
+			callback(null, advertisements);
 		})
 		.catch((err) => {
 			callback(err);
@@ -52,7 +52,7 @@ module.exports = {
 		return Advertisement.findById(id)
 		.then((advertisement) => {
 			if(!advertisement){
-				return callbck('Advertisement not found');
+				return callback('Advertisement not found');
 			}
 			advertisement.update(updatedAdvertisement, {
 				fields: Object.keys(updatedAdvertisement)
