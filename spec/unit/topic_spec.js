@@ -1,5 +1,7 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const User = require("../../src/db/models").User;
+const Topic = require("../../src/db/models").Topic;
+const Post = require("../../src/db/models").Post;
 
    beforeEach((done) => {
      this.topic;

@@ -69,7 +69,8 @@ describe("POST /topics/:topicId/posts/create", () => {
       };
       request.post(options,
         (err, res, body) => {
-
+          console.info(body);
+          console.info(err);
           Post.findOne({where: {title: "Watching snow melt"}})
           .then((post) => {
             expect(post).not.toBeNull();
