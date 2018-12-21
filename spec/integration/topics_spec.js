@@ -179,17 +179,26 @@ describe("admin user performing CRUD actions for Topic", () => {
    describe("member user performing CRUD actions for Topic", () => {
 
   // #4: Send mock request and authenticate as a member user
-     beforeEach((done) => {
-       request.get({
-         url: "http://localhost:3000/auth/fake",
-         form: {
-           role: "member"
-         }
-       },
-         (err, res, body) => {
-           done();
-         }
-       );
+	beforeEach((done) => {
+       User.create({
+         email: "member@example.com",
+         password: "123456",
+         role: "member"
+       })
+       .then((user) => {
+         request.get({         // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: user.role,     // mock authenticate as admin user
+             userId: user.id,
+             email: user.email
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
+       });
      });
 
 	describe('GET /topics', () => {
@@ -215,27 +224,21 @@ describe("admin user performing CRUD actions for Topic", () => {
 		});
 	});
 
-   describe("POST /topics/create", () => {
+    describe("POST /topics/create", () => {
       const options = {
         url: `${base}create`,
         form: {
           title: "blink-182 songs",
           description: "What's your favorite blink-182 song?"
         }
-      };
+      }
 
-      it("should create a new topic and redirect", (done) => {
-
-//#1
+      it("should not create a new topic", (done) => {
         request.post(options,
-
-//#2
           (err, res, body) => {
             Topic.findOne({where: {title: "blink-182 songs"}})
             .then((topic) => {
-              expect(res.statusCode).toBe(303);
-              expect(topic.title).toBe("blink-182 songs");
-              expect(topic.description).toBe("What's your favorite blink-182 song?");
+              expect(topic).toBeNull(); // no topic should be returned
               done();
             })
             .catch((err) => {
@@ -265,11 +268,11 @@ describe("admin user performing CRUD actions for Topic", () => {
 			.then((topics) => {
 				const topicCountBeforeDelete = topics.length;
 				expect(topicCountBeforeDelete).toBe(1);
-				request.post(`${base}${this.topics[0].id}/destroy`, (err, res, body) => {
+				request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
 					Topic.all()
 					.then((topics) => {
 						expect(err).toBeNull();
-						expect(topics.length).toBe(topicCountBeforeDelete - 1);
+						expect(topics.length).toBe(topicCountBeforeDelete);
 						done();
 					})
 				});
