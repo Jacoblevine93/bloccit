@@ -265,7 +265,7 @@ describe("admin user performing CRUD actions for Topic", () => {
 			.then((topics) => {
 				const topicCountBeforeDelete = topics.length;
 				expect(topicCountBeforeDelete).toBe(1);
-				request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
+				request.post(`${base}${this.topics[0].id}/destroy`, (err, res, body) => {
 					Topic.all()
 					.then((topics) => {
 						expect(err).toBeNull();
