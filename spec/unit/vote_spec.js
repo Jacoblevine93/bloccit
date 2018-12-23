@@ -135,6 +135,71 @@ describe("Vote", () => {
          })
        });
 
+         it("should note create an upvote to be anything but 1", (done) => {
+
+         Vote.create({
+           value: 1,
+           postId: this.post.id,
+           userId: this.user.id
+         })
+         .then((vote) => {
+
+           expect(vote.value).toBe(1);
+           expect(vote.postId).toBe(this.post.id);
+           expect(vote.userId).toBe(this.user.id);
+           done();
+
+         })
+         .catch((err) => {
+           console.log(err);
+           done();
+         });
+       }); 
+
+         it("should note create a downvote to be anything but -1", (done) => {
+
+         Vote.create({
+           value: -1,
+           postId: this.post.id,
+           userId: this.user.id
+         })
+         .then((vote) => {
+
+           expect(vote.value).toBe(-1);
+           expect(vote.postId).toBe(this.post.id);
+           expect(vote.userId).toBe(this.user.id);
+           done();
+
+         })
+         .catch((err) => {
+           console.log(err);
+           done();
+         });
+       });   
+
+         it("should not allow a user to create two votes", (done) => {
+
+         Vote.create({
+           value: -1,
+           postId: this.post.id,
+           userId: this.user1.id
+         })
+         Vote.create({
+           value: 1,
+           postId: this.post.id,
+           userId: this.user2.id
+         })         
+         .then((vote) => {
+           expect(vote.user1.id).not.toBe(vote.user2.id);
+           done();
+
+         })
+         .catch((err) => {
+           console.log(err);
+           done();
+         });
+       });                  
+
      });
 
 
@@ -145,7 +210,7 @@ describe("Vote", () => {
          Vote.create({           // create a vote on behalf of this.user
            value: -1,
            postId: this.post.id,
-           userId: this.user.id
+           userId: this.user1.id
          })
          .then((vote) => {
            this.vote = vote;     // store it

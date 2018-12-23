@@ -14,7 +14,8 @@ describe("Post", () => {
 
        User.create({
          email: "starman@tesla.com",
-         password: "Trekkie4lyfe"
+         password: "Trekkie4lyfe",
+         id: "12345"
        })
        .then((user) => {
          this.user = user; //store the user
@@ -32,6 +33,10 @@ describe("Post", () => {
              model: Post,
              as: "posts"
            }
+           include: {
+             model: Vote,
+             as: "votes"
+           }           
          })
          .then((topic) => {
            this.topic = topic; //store the topic
@@ -162,8 +167,53 @@ describe("Post", () => {
      it("should return the associated topic", (done) => {
 
        this.post.getUser()
-       .then((associatedUser) => {
-         expect(associatedUser.email).toBe("starman@tesla.com");
+       .then((post) => {
+         expect(post.userId).toBe("starman@tesla.com");
+         done();
+       });
+
+     });
+
+   });
+
+
+   describe("#getPoints()", () => {
+
+     it("should return the associated number of points on the post", (done) => {
+
+       this.post.getPoints()
+       .then((votes) => {
+         expect(votes.length).not.toBeNull();
+         done();
+       });
+
+     });
+
+   });        
+
+   describe("#hasUpvoteFor()", () => {
+
+     it("should return true if user has upvoted post", (done) => {
+
+       this.post.hasUpvoteFor()
+       .then((post) => {
+         expect(this.vote.userId).toBe('12345');
+         expect(this.vote.value).toBe(1);
+         done();
+       });
+
+     });
+
+   });    
+
+   describe("#hasDownvoteFor()", () => {
+
+     it("should return true if user has downvoted post", (done) => {
+
+       this.post.hasDownvoteFor()
+       .then((post) => {
+         expect(this.vote.userId).toBe('12345');
+         expect(this.vote.value).toBe(-1);
          done();
        });
 
